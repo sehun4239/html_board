@@ -1,0 +1,75 @@
+
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block container %}
+    <br><br>
+    <div class="container">
+        <p align="right">추천: {{post.like}} 비추: {{post.unlike}}</p>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-light">
+                <tr align = "center">
+                    <th scope="col" width="75px"># {{post.id}}</th>
+                    <th scope="col">{{post.contents}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">{{post.texts}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p align="right">Created by {{post.author}}</p>
+        <p align="right">Created date: {{post.pdate}}</p>
+        <a href="{% url 'posts:list' %}" class="btn btn-success">목록으로</a>
+        <a href="{% url 'posts:update' post.id %}" class="btn btn-warning">수정</a>
+        <a href="{% url 'posts:delete' post.id %}" class="btn btn-danger">삭제</a>
+
+        <div class="container" align="right">
+        <a href="{% url 'posts:like' post.id %}" class="btn btn-primary btn-sm">추천</a>
+        <a href="{% url 'posts:unlike' post.id %}" class="btn btn-danger btn-sm">비추</a>
+<!--        <form action="{% url 'posts:like' post.id %}" method="post">-->
+<!--            {% csrf_token %}-->
+<!--            <button type="submit" class="btn btn-primary btn-sm">추천</button>-->
+<!--        </form>-->
+<!--        <form action="{% url 'posts:unlike' post.id %}" method="post">-->
+<!--            {% csrf_token %}-->
+<!--            <button type="submit" class="btn btn-danger btn-sm">비추</button>-->
+<!--        </form>-->
+        </div>
+    </div>
+
+    <br><br>
+    <div class="container">
+        <h4 class="hh" align="center"></h4>
+        <h4 class="hh" align="center"></h4>
+        <form action="{% url 'posts:reply' post.id %}" method="post">
+            {% csrf_token %}
+            {% bootstrap_form reply_form %}
+
+            <button type="submit" class="btn btn-primary">댓글 달기</button>
+        </form>
+    </div>
+    <br><br>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="my">
+                    <th scope="col" colspan="3">댓글</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reply in post.reply_set.all %}
+                <tr>
+                    <td>{{reply.reply}}<h6 class="td1" align="right">Created by {{reply.writer}} &nbsp;&nbsp;&nbsp; Modified time: {{reply.pdate}}</h6></td>
+                    <td width="20px">
+                    <a href="{% url 'posts:rupdate' post.id reply.id %}" class="btn btn-warning btn-sm">수정</a>
+                    </td>
+                    <td width="20px">
+                    <a href="{% url 'posts:rdelete' post.id reply.id %}" class="btn btn-danger btn-sm">삭제</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

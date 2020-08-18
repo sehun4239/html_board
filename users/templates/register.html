@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block container %}
+    <div class="container">
+        <h1 align="center">회원가입</h1>
+        <a href="{% url 'posts:list' %}" class="btn btn-success">목록으로</a>
+        <br><br>
+            <form method="post">
+                {% csrf_token %}
+                {% bootstrap_form register_form %}
+            <button type="submit" class="btn btn-primary">가입 완료</button>
+        </form>
+        <br><br>
+    {% if error_message %}
+    <h1 style="color:red"> {{error_message}} </h1>
+    {% endif %}
+
+    </div>
+
+{% endblock %}

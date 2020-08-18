@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block container %}
+    <div class="container">
+        <h1>댓글 수정</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form reply_form %}
+
+            <button type="submit" class="btn btn-primary">등록</button>
+        </form>
+    </div>
+{% endblock %}

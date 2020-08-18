@@ -1,0 +1,59 @@
+
+{% extends 'base.html' %}
+{% block container %}
+    <script src="/static/js/posts.js"></script>
+    <div class = "row mt-5">
+    <div class = "col-12 text-center">
+            <h1>Bulletin Board System(BBS)</h1>
+    </div></div>
+    <div class="container">
+        {% if request.session.user %}
+        <button class="btn btn-primary" onclick="new_post()">새글 작성</button>
+        <a href="{% url 'users:logout' %}" class="btn btn-danger">로그아웃</a>
+        {% else %}
+        <a href="{% url 'users:register' %}" class="btn btn-info">회원가입</a>
+        <a href="{% url 'users:login' %}" class="btn btn-success">로그인</a>
+        {% endif %}
+        <div class="m-1"></div>
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr align="center">
+                    <th scope="col">#</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">글쓴이</th>
+                    <th scope="col" style="color:#00CDFF">추천</th>
+                    <th scope="col" style="color:#FF6666">비추</th>
+                    <th scope="col" width="70px">수정</th>
+                    <th scope="col" width="70px">삭제</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                <tr align="center">
+                    <th scope="row" width="70px">{{ post.id }}</th>
+                    <td width="500px"><a href="{% url 'posts:detail' post.id %}">{{ post.contents }}</a></td>
+                    <td width="150px">{{ post.author }}</td>
+                    <td width="70px" style="color:#00CDFF">{{ post.like }}</td>
+                    <td width="70px" style="color:#FF6666">{{ post.unlike }}</td>
+                    {% if request.session.user %}
+                    <td width="70px">
+                        <a href="{% url 'posts:update' post.id %}" class="btn btn-warning btn-sm">수정</a>
+                    </td>
+                    <td width="70px">
+                        <a href="{% url 'posts:delete' post.id %}" class="btn btn-danger btn-sm">삭제</a>
+                    </td>
+                    {% else %}
+                    <td width="70px"></td>
+                    <td width="70px"></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+{% endblock %}
